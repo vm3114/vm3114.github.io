@@ -1,4 +1,5 @@
 let apiData;
+const url = "https://opentdb.com/api.php?amount=10&difficulty=medium&type=multiple";
 
 function decodeHtml(text) {
     const txtArea = document.createElement("textarea");
@@ -8,7 +9,7 @@ function decodeHtml(text) {
 
 async function fetchData() {
     try {
-        const response = await fetch('https://opentdb.com/api.php?amount=10&type=multiple'); 
+        const response = await fetch(url); 
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -26,7 +27,7 @@ async function processData() {
         let lastAns;
         let currentQuestionIndex = 0; // current question index
         let heading_length = 0;
-        
+      
         function loadQuestion() {
             if (currentQuestionIndex < questions.length) {
                 const question = questions[currentQuestionIndex];
@@ -43,16 +44,17 @@ async function processData() {
                 
                 for (let j = 0; k <= 4; k++) { // Options from 1 to 4
                     let option = document.getElementById("option" + k);
-                    if (k === correctIndex) {
+                    if (k == correctIndex) {
                         option.innerHTML = question.correct_answer;
                     } else {
                         option.innerHTML = question.incorrect_answers[j];
                         j++;
                     }
                 }
+                
                 for (let p = 0; p < buttons_array.length; p++) {
                     buttons_array[p].onclick = function() {
-                        if (buttons_array[p].innerHTML == question.correct_answer) {
+                        if (decodeHtml(buttons_array[p].innerHTML) == question.correct_answer) {
                             score++;
                             lastAns = "Correct Answer!";
                         } 
@@ -60,11 +62,16 @@ async function processData() {
                             lastAns = "Incorrect Answer!";
                         }
 
+                        // console.log("Correct Ans: " + question.correct_answer);
+                        // console.log("Your Ans: " + buttons_array[p].innerHTML);
+                        // console.log("Your answer was the " + lastAns);
+
+
                         let btns = document.getElementsByClassName("option");
                         for (let b = 0; b < btns.length; b++){
                             btns[b].disabled = true;
 
-                            if (btns[b].innerHTML == question.correct_answer){
+                            if (decodeHtml(btns[b].innerHTML) == question.correct_answer){
                                 btns[b].style.setProperty("--btn-bg", "green");
                             }
                             else{
