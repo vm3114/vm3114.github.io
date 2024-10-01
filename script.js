@@ -1,5 +1,11 @@
 let apiData;
 
+function decodeHtml(text) {
+    const txtArea = document.createElement("textarea");
+    txtArea.innerHTML = text;
+    return txtArea.value;
+}
+
 async function fetchData() {
     try {
         const response = await fetch('https://opentdb.com/api.php?amount=10&type=multiple'); 
@@ -24,7 +30,9 @@ async function processData() {
         function loadQuestion() {
             if (currentQuestionIndex < questions.length) {
                 const question = questions[currentQuestionIndex];
+                question.correct_answer = decodeHtml(question.correct_answer);
                 document.getElementById("question").innerHTML = "Q." + (currentQuestionIndex + 1) + " " + question.question;
+                
                 let buttons_array = document.getElementsByClassName("option");
                 for(let m = 0; m < buttons_array.length; m++){
                     buttons_array[m].style.setProperty("--btn-bg", "initial");
@@ -47,15 +55,34 @@ async function processData() {
                         if (buttons_array[p].innerHTML == question.correct_answer) {
                             score++;
                             lastAns = "Correct Answer!";
-                            buttons_array[p].style.setProperty("--btn-bg", "green");                     
-                        } else {
-                            buttons_array[p].style.setProperty("--btn-bg", "red")
+                        } 
+                        else {
                             lastAns = "Incorrect Answer!";
                         }
+
+                        let btns = document.getElementsByClassName("option");
+                        for (let b = 0; b < btns.length; b++){
+                            btns[b].disabled = true;
+
+                            if (btns[b].innerHTML == question.correct_answer){
+                                btns[b].style.setProperty("--btn-bg", "green");
+                            }
+                            else{
+                                btns[b].style.setProperty("--btn-bg","red");
+                            }
+                        }
+
+                        setTimeout(function() {
+                            for (let b = 0; b < btns.length; b++){
+                                btns[b].disabled = false;
+                            }                            
+                        }, 1000);
+
                         currentQuestionIndex++;
                         heading_length += 60;
                         const element = document.querySelector(".three");
                         element.style.setProperty("--heading-length", heading_length + "px");
+
                         setTimeout(loadQuestion, 1000);
                     };
                 }
