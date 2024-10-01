@@ -29,6 +29,15 @@ async function processData() {
         let heading_length = 0;
       
         function loadQuestion() {
+            if (currentQuestionIndex > 0){
+                let correct_percentage = (score * 100)/currentQuestionIndex;
+                let line = document.getElementById("line");
+                line.style.setProperty("--pseudo-red", "red");
+                line.style.setProperty("--pseudo-green", "green");
+                line.style.setProperty("--correct-percentage", correct_percentage + "%");
+                
+            }
+
             if (currentQuestionIndex < questions.length) {
                 const question = questions[currentQuestionIndex];
                 question.correct_answer = decodeHtml(question.correct_answer);

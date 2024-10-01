@@ -4,7 +4,7 @@ body{
 }
 
 .three h1 {
-    font-size: 80px;
+    font-size: 5vw;
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1.5em;
@@ -58,10 +58,25 @@ button:hover {
 
 #question{
     font-family: monospace;
-    font-size: 50px;
+    font-size: 3.5vw;
     border: 1px solid white;
     border-radius: 15px;
     padding: 15px;
     max-width: 50%;
+}
+
+#line {
+  margin: 0;
+  width: 85%;
+  height: 5px;
+  background-color: var(--pseudo-red, white);
+  border: 0;
+}
+
+#line:after {
+  content: '';
+  display: block;
+  border-bottom: 5px solid var(--pseudo-green, white);
+  max-width: var(--correct-percentage, 0%);
 }
 
