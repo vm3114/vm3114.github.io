@@ -4,7 +4,7 @@ body{
 }
 
 .three h1 {
-    font-size: 5vw;
+    font-size: 5.5vw;
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1.5em;
@@ -19,6 +19,7 @@ body{
     bottom: 0;
     height: 5px;
     width: var(--heading-length);
+    transition: all 1s;
     background-color: white;
   }
 
@@ -41,7 +42,7 @@ button {
     text-transform: uppercase;
     text-align: center;
     line-height: 1;
-    font-size: 17px;
+    font-size: 1.3vw;
     background-color : var(--btn-bg, transparent);
     padding: 10px;
     outline: none;
@@ -63,6 +64,13 @@ button:hover {
     border-radius: 15px;
     padding: 15px;
     max-width: 50%;
+    user-select: none;
+    
+}
+
+#question:hover{
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: all 0.5s;
 }
 
 #line {
@@ -76,7 +84,7 @@ button:hover {
 #line:after {
   content: '';
   display: block;
+  transition: all 1s;
   border-bottom: 5px solid var(--pseudo-green, white);
   max-width: var(--correct-percentage, 0%);
 }
-
