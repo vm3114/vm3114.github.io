@@ -94,10 +94,12 @@ async function processData() {
                             }                            
                         }, 1000);
 
+                        var max_width = getComputedStyle(document.querySelector(".three")).getPropertyValue("--max-width");
+                        var max_width_value = parseInt(max_width.replace(/em/,""));
                         currentQuestionIndex++;
-                        heading_length += 60;
+                        heading_length = currentQuestionIndex*max_width_value/10;
                         const element = document.querySelector(".three");
-                        element.style.setProperty("--heading-length", heading_length + "px");
+                        element.style.setProperty("--heading-length", heading_length + "em");
 
                         setTimeout(loadQuestion, 1000);
                     };
