@@ -106,10 +106,14 @@ async function processData() {
                 }
             } else {
                 document.write(`
-                    <p style="position: absolute; top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%, -50%); text-align: center; font-size: 50px; font-family: fantasy; border: 2px 2px 2px solid black; background-color: aquamarine; border-radius: 10px; padding: 10px 10px 10px 10px; ">
-                    Quiz completed! Your score: ${score}/${questions.length}<br>
+                    <link rel="stylesheet" href="style.css">
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div class="card" id="question">
+            Quiz completed!<br> Your score: ${score}/${questions.length}<br>
                     Refresh to play again!
-                    </p>
+        </div>
+    </div>
+        
                     `);
             }
         }
@@ -120,5 +124,52 @@ async function processData() {
     }
 }
 
+const $card = document.querySelector('.card');
+let bounds;
+
+function rotateToMouse(e) {
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
+  const leftX = mouseX - bounds.x;
+  const topY = mouseY - bounds.y;
+  const center = {
+    x: leftX - bounds.width / 2,
+    y: topY - bounds.height / 2
+  }
+  const distance = Math.sqrt(center.x**2 + center.y**2);
+  
+  $card.style.transform = `
+    scale3d(1.07, 1.07, 1.07)
+    rotate3d(
+      ${center.y / 100},
+      ${-center.x / 100},
+      0,
+      ${Math.log(distance)* 2}deg
+    )
+  `;
+  
+  $card.querySelector('.glow').style.backgroundImage = `
+    radial-gradient(
+      circle at
+      ${center.x * 2 + bounds.width/2}px
+      ${center.y * 2 + bounds.height/2}px,
+      #ffffff55,
+      #0000000f
+    )
+  `;
+}
+
+$card.addEventListener('mouseenter', () => {
+  bounds = $card.getBoundingClientRect();
+  document.addEventListener('mousemove', rotateToMouse);
+});
+
+$card.addEventListener('mouseleave', () => {
+  document.removeEventListener('mousemove', rotateToMouse);
+  $card.style.transform = '';
+  $card.style.background = '';
+});
+
 fetchData();
 processData();
+
